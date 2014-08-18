@@ -15,5 +15,9 @@ mod "saz/vim"
 mod "camptocamp/tomcat"
 
 # let's get fancy with camptocamp's apache integration
-mod "camptocamp/apache_c2c",
-   :git => "git://github.com/camptocamp/puppet-apache_c2c.git"
+#mod "camptocamp/apache_c2c",
+#   :git => "git://github.com/camptocamp/puppet-apache_c2c.git"
+#
+
+# let's just try the puppetlabs apache
+mod "puppetlabs/apache"

@@ -35,26 +35,15 @@ tomcat::instance {'fedora':
 
 ->
 
-# define a vhost for later, required by apache_c2c
-apache_c2c::vhost {'_default':
-  ensure => present,
+# set up a reverse proxy for tomcat
+
+apache::vhost { '_default':
+  proxy_pass => [
+    { 'path' => '/probe', 'url' => 'http://localhost:8009/probe' },
+    { 'path' => '/fedora', 'url' => 'http://localhost:8009/fedora' },
+  ],
 }
 
-apache_c2c::proxypass {'fedora':
-  ensure   => present,
-  location => '/fedora',
-  url      => 'ajp://localhost:8009/fedora',
-  vhost    => '_default',
-}
-
-->
-
-apache_c2c::proxypass {'probe':
-  ensure   => present,
-  location => '/probe',
-  url      => 'ajp://localhost:8009/probe',
-  vhost    => '_default',
-}
 
 ->
 
