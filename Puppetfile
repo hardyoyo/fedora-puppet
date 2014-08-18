@@ -19,8 +19,8 @@ mod "camptocamp/tomcat"
 #   :git => "git://github.com/camptocamp/puppet-apache_c2c.git"
 #
 
-# let's just try the puppetlabs apache
-mod "puppetlabs/apache"
+# let's just try soluvas/puppet-apache
+mod "soluvas/puppet-apache"
 
 # and we will deploy with this cool puppet-nexus module
 mod "cescoffier/nexus",
