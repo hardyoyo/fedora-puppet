@@ -26,7 +26,7 @@ tomcat::instance {'fedora':
 }
 
 
-->
+#->
 
 # TODO: figure out the correct path for tomcat webaps
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
