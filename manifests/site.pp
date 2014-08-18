@@ -17,14 +17,6 @@ Exec {
 # Let's ensure Vim is properly configured
 class { 'vim': }
 
-# prepare Apache to reverse proxy
-include apache_c2c
-
-apache_c2c::module {'proxy_ajp':
-  ensure  => present,
-}
-
-
 # Create a new Tomcat instance
 include tomcat
 
