@@ -25,15 +25,17 @@ tomcat::instance {'fedora':
   http_port => '8080',
 }
 
-->
+
 
 # set up a reverse proxy for tomcat
+include apache
 
 apache::vhost { '_default':
   proxy_pass => [
     { 'path' => '/probe', 'url' => 'http://localhost:8009/probe' },
     { 'path' => '/fedora', 'url' => 'http://localhost:8009/fedora' },
   ],
+  docroot => "/var/www/html",
 }
 
 
