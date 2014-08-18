@@ -34,15 +34,17 @@ tomcat::instance {'fedora':
 }
 
 ->
-# save for later, if we ever want to name this site something
-#apache_c2c::vhost {'www.mycompany.com':
-#  ensure => present,
-#}
+
+# define a vhost for later, required by apache_c2c
+apache_c2c::vhost {'_default':
+  ensure => present,
+}
 
 apache_c2c::proxypass {'fedora':
   ensure   => present,
   location => '/fedora',
   url      => 'ajp://localhost:8009/fedora',
+  vhost    => '_default',
 }
 
 ->
@@ -51,6 +53,7 @@ apache_c2c::proxypass {'probe':
   ensure   => present,
   location => '/probe',
   url      => 'ajp://localhost:8009/probe',
+  vhost    => '_default',
 }
 
 ->
@@ -67,14 +70,14 @@ exec {"Download and install the Psi-probe war":
    logoutput => true,
 }
  
-->
+#->
 
 # TODO: finally, what we're here for, let's set up fedora4!
 
 # Set the runlevels of tomcat-fedora
 # AND start the tomcat-fedora service
-service {"tomcat-fedora":
-   enable => "true",
-   ensure => "running",
-}
+#service {"tomcat-fedora":
+#   enable => "true",
+#   ensure => "running",
+#}
 
