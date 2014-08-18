@@ -1,15 +1,8 @@
-# DSpace initialization script
+# Fedora4 initialization script
 #
 # This Puppet script does the following:
-# - installs Java, Maven, Ant
-# - installs Git & clones DSpace source code
-#
-
-# Global default to requiring all packages be installed & apt-update to be run first
-Package {
-  ensure => latest,                # requires latest version of each package to be installed
-  require => Exec["apt-get-update"],
-}
+# - installs Tomcat
+# - downloads and configures wars for probe and fedora4
 
 # Ensure the rcconf package is installed, we'll use it later to set runlevels of services
 package { "rcconf":
@@ -58,7 +51,7 @@ service {"tomcat7":
    ensure => "running",
 }
 
-->
+#->
 
 # TODO: set the correct path for webapps, once I figure it out for probe, do the same for Fedora
 # add a context fragment file for Psi-probe, and restart tomcat7
