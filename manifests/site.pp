@@ -39,9 +39,6 @@ apache::vhost { '_default':
 }
 
 
-->
-
-
 # TODO: set up tomcat-users.xml
 
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
@@ -53,9 +50,21 @@ exec {"Download and install the Psi-probe war":
    logoutput => true,
 }
  
-#->
+# finally, what we're here for, let's set up fedora4!
 
-# TODO: finally, what we're here for, let's set up fedora4!
+# Initialize Nexus
+class {'nexus':
+    url => "https://oss.sonatype.org/"
+}
+
+nexus::artifact {'fcrepo-webapp':
+    gav => "fcrepot-webapp:4.0.0-beta-01",
+    repository => "Releases",
+    type => "war",
+    output => "/srv/tomcat/fedora/webapps/fedora.war"
+}
+
+
 
 # Set the runlevels of tomcat-fedora
 # AND start the tomcat-fedora service
