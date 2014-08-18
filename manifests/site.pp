@@ -54,17 +54,16 @@ exec {"Download and install the Psi-probe war":
 
 # Initialize Nexus
 class {'nexus':
-    url => "https://oss.sonatype.org/"
+    url => "https://oss.sonatype.org"
 }
 
+# And grab the fedora war based on the GAV coordinate (group:artifactID:version)
 nexus::artifact {'fcrepo-webapp':
-    gav => "fcrepot-webapp:4.0.0-beta-01",
-    repository => "Releases",
+    gav => "org.fcrepo:fcrepo-webapp:4.0.0-beta-01",
+    repository => "releases",
     packaging => "war",
     output => "/srv/tomcat/fedora/webapps/fedora.war"
 }
-
-
 
 # Set the runlevels of tomcat-fedora
 # AND start the tomcat-fedora service
