@@ -22,7 +22,7 @@ include tomcat
 
 tomcat::instance {'fedora':
   ensure    => present,
-  http_port => '80',
+  http_port => '8080',
 }
 
 
