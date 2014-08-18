@@ -1,14 +1,12 @@
 # Configuration for librarian-puppet (http://librarian-puppet.com/)
 # This installs necessary third-party Puppet Modules for us.
 
-# Install Puppet PostgreSQL module from PuppetForge
+# let's use PuppetForge for our puppet modules, shall we?
 forge "http://forge.puppetlabs.com"
-mod "puppetlabs/postgresql", "3.3.0"
+
+# and let's just make vim a little nicer, because we can
 mod "saz/vim"
 
-# we'll use Maestrodev's maven puppet modle to isntall Maven for us
-mod "maestrodev/maven"
+# let's use oscerd's tomcat module
+mod "oscerd/tomcat"
 
-# Install Tim's simple Tomcat module from GitHub
-mod "tomcat",
-   :git => "http://github.com/tdonohue/puppet-tomcat.git"
