@@ -60,7 +60,7 @@ class {'nexus':
 nexus::artifact {'fcrepo-webapp':
     gav => "fcrepot-webapp:4.0.0-beta-01",
     repository => "Releases",
-    type => "war",
+    packaging => "war",
     output => "/srv/tomcat/fedora/webapps/fedora.war"
 }
 
