@@ -11,20 +11,19 @@ package { "rcconf":
 
 # Global default path settings for all 'exec' commands
 Exec {
-  path => "/usr/bin:/usr/sbin:/bin",
+  path => "/usr/bin:/usr/sbin/:/bin:/sbin:/usr/local/bin:/usr/local/sbin",
 }
 
+# Let's ensure Vim is properly configured
+class { 'vim': }
+
 # Create a new Tomcat instance
-tomcat::setup { "tomcat":
-  family => "7",
-  update_version => "55",
-  extension => ".zip",
-  source_mode => "web",
-  installdir => "/opt/",
-  tmpdir => "/tmp/",
-  install_mode => "custom",
-  data_source => "yes",
-  }
+include tomcat
+
+tomcat::instance {'fedora':
+  ensure    => present,
+  http_port => '80',
+}
 
 
 ->
@@ -44,10 +43,10 @@ tomcat::setup { "tomcat":
 #TODO I'm not sure what the service name will be... but tomcat7 is a good guess
 # Set the runlevels of tomcat7
 # AND start the tomcat7 service
-service {"tomcat7":
-   enable => "true",
-   ensure => "running",
-}
+#service {"tomcat7":
+#   enable => "true",
+#   ensure => "running",
+#}
 
 #->
 

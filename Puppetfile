@@ -7,6 +7,6 @@ forge "http://forge.puppetlabs.com"
 # and let's just make vim a little nicer, because we can
 mod "saz/vim"
 
-# let's use oscerd's tomcat module
-mod "oscerd/tomcat"
+# let's use camptocamp's tomcat module
+mod "camptocamp/tomcat"
 
