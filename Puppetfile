@@ -13,3 +13,5 @@ mod "saz/vim"
 # let's use camptocamp's tomcat module
 mod "camptocamp/tomcat"
 
+# let's get fancy with camptocamp's apache integration
+mod "camptocamp/apache_c2c"

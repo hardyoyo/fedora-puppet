@@ -17,6 +17,14 @@ Exec {
 # Let's ensure Vim is properly configured
 class { 'vim': }
 
+# prepare Apache to reverse proxy
+include apache_c2c
+
+apache_c2c::module {'proxy_ajp':
+  ensure  => present,
+}
+
+
 # Create a new Tomcat instance
 include tomcat
 
@@ -25,36 +33,48 @@ tomcat::instance {'fedora':
   http_port => '8080',
 }
 
+->
+# save for later, if we ever want to name this site something
+#apache_c2c::vhost {'www.mycompany.com':
+#  ensure => present,
+#}
 
-#->
+apache_c2c::proxypass {'fedora':
+  ensure   => present,
+  location => '/fedora',
+  url      => 'ajp://localhost:8009/fedora',
+}
 
-# TODO: figure out the correct path for tomcat webaps
+->
+
+apache_c2c::proxypass {'probe':
+  ensure   => present,
+  location => '/probe',
+  url      => 'ajp://localhost:8009/probe',
+}
+
+->
+
+
+# TODO: set up tomcat-users.xml
+
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
-#exec {"Download and install the Psi-probe war":
-#   command   => "wget http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
-#   cwd       => "/home/vagrant/tomcat/webapps",
-#   creates   => "/home/vagrant/tomcat/webapps/probe.war",
-#   user      => "vagrant",
-#   logoutput => true,
-#}
+exec {"Download and install the Psi-probe war":
+   command   => "wget http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
+   cwd       => "/srv/tomcat/fedora/webapps",
+   creates   => "/srv/tomcat/fedora/webapps/probe.war",
+   user      => "tomcat",
+   logoutput => true,
+}
  
-#->
+->
 
-#TODO I'm not sure what the service name will be... but tomcat7 is a good guess
-# Set the runlevels of tomcat7
-# AND start the tomcat7 service
-#service {"tomcat7":
-#   enable => "true",
-#   ensure => "running",
-#}
+# TODO: finally, what we're here for, let's set up fedora4!
 
-#->
+# Set the runlevels of tomcat-fedora
+# AND start the tomcat-fedora service
+service {"tomcat-fedora":
+   enable => "true",
+   ensure => "running",
+}
 
-# TODO: set the correct path for webapps, once I figure it out for probe, do the same for Fedora
-# add a context fragment file for Psi-probe, and restart tomcat7
-#file { "/home/vagrant/tomcat/conf/Catalina/localhost/probe.xml" :
-#   ensure  => file,
-#   owner   => tomcat,
-#   group   => tomcat,
-#   content => template("fedora/probe.xml.erb"),
-#}
