@@ -24,8 +24,6 @@ tomcat::setup { "tomcat":
   tmpdir => "/tmp/",
   install_mode => "custom",
   data_source => "yes",
-  http_port => "80",
-  https_port => "443"
   }
 
 
