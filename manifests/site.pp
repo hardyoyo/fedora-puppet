@@ -32,8 +32,8 @@ include apache
 
 apache::vhost { '_default':
   proxy_pass => [
-    { 'path' => '/probe', 'url' => 'http://localhost:8009/probe' },
-    { 'path' => '/fedora', 'url' => 'http://localhost:8009/fedora' },
+    { 'path' => '/probe', 'url' => 'ajp://localhost:8009/probe' },
+    { 'path' => '/fedora', 'url' => 'ajp://localhost:8009/fedora' },
   ],
   docroot => "/var/www/html",
 }
