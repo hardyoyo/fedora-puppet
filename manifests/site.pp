@@ -23,44 +23,41 @@ include tomcat
 tomcat::instance {'fedora':
   ensure    => present,
   http_port => '80',
+  owner   => tomcat6,
+  group   => tomcat6,
 }
 
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
 exec {"Download and install the Psi-probe war":
-   command   => "wget http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
+   command   => "wget -q http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
    cwd       => "/srv/tomcat/fedora/webapps",
    creates   => "/srv/tomcat/fedora/webapps/probe.war",
-   user      => "tomcat",
+   user      => "tomcat6",
    logoutput => true,
 }
 
 # add a context fragment file for Psi-probe
-file { "/srv/tomcat/fedora/conf/Catalina/localhost/probe.xml" :
+file { "/etc/tomcat6/Catalina/localhost/probe.xml" :
    ensure  => file,
-   owner   => tomcat,
-   group   => tomcat,
+   owner   => tomcat6,
+   group   => tomcat6,
    content => template("fedora/probe.xml.erb"),
 }
  
 # finally, what we're here for, let's set up fedora4!
 
-# Initialize Nexus
-class {'nexus':
-    url => "https://oss.sonatype.org"
+exec {"Download and install the Fedora4 war":
+   command   => "wget -q https://github.com/fcrepo4/fcrepo4/releases/download/fcrepo-4.0.0-beta-01/fcrepo-webapp-4.0.0-beta-01.war -O fedora.war",
+   cwd       => "/srv/tomcat/fedora/webapps",
+   creates   => "/srv/tomcat/fedora/webapps/fedora.war",
+   user      => "tomcat6",
+   logoutput => true,
 }
 
-# And grab the fedora war based on the GAV coordinate (group:artifactID:version)
-nexus::artifact {'fcrepo-webapp':
-    gav => "org.fcrepo:fcrepo-webapp:4.0.0-beta-01",
-    repository => "releases",
-    packaging => "war",
-    output => "/srv/tomcat/fedora/webapps/fedora.war"
+# add a context fragment file for Fedora
+file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
+   ensure  => file,
+   owner   => tomcat6,
+   group   => tomcat6,
+   content => template("fedora/fedora.xml.erb"),
 }
-
-# Set the runlevels of tomcat-fedora
-# AND start the tomcat-fedora service
-service {"tomcat-fedora":
-   enable => "true",
-   ensure => "running",
-}
-

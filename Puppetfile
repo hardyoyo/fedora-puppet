@@ -14,10 +14,3 @@ mod "saz/vim"
 # let's use camptocamp's tomcat module
 mod "camptocamp/tomcat"
 
-# let's get fancy with camptocamp's apache integration
-#mod "camptocamp/apache_c2c",
-#   :git => "git://github.com/camptocamp/puppet-apache_c2c.git"
-#
-# and we will deploy fedora with this cool puppet-nexus module
-mod "cescoffier/nexus",
-   :git => "git://github.com/cescoffier/puppet-nexus.git"
