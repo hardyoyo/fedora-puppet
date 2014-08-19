@@ -32,7 +32,7 @@ class { 'apache':
   default_vhost => false,
 }
 
-apache::vhost { 'default':
+apache::vhost { 'fedora':
   vhost_name => '*',
   port       => '80',
   docroot    => "/var/www/html",
