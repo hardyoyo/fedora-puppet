@@ -17,21 +17,37 @@ Exec {
 # Let's ensure Vim is properly configured
 class { 'vim': }
 
-# Create a new Tomcat instance
-include tomcat
-
-tomcat::instance {'fedora':
-  ensure    => present,
-  http_port => '80',
-  owner   => tomcat6,
-  group   => tomcat6,
+# ensure tomcat6 is installed
+package { "tomcat6":
+  ensure => "installed"
 }
+
+->
+
+# set authbind for tomcat6 (just append AUTHBIND=yes to the end of /etc/default/tomcat6)
+exec {"setting AUTHBIND for tomcat6 to yes":
+   command   => "echo 'AUTHBIND=yes' >> /etc/default/tomcat6",
+   cwd       => "/etc/default",
+   creates   => "/etc/default/tomcat6",
+   logoutput => true,
+}
+
+->
+
+# set up tomcat6's server.xml file
+file { "/etc/tomcat6/settings.xml" :
+   ensure  => file,
+   owner   => tomcat6,
+   group   => tomcat6,
+   content => template("fedora/probe.xml.erb"),
+}
+ 
 
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
 exec {"Download and install the Psi-probe war":
    command   => "wget -q http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
-   cwd       => "/srv/tomcat/fedora/webapps",
-   creates   => "/srv/tomcat/fedora/webapps/probe.war",
+   cwd       => "/var/lib/tomcat6/webapps",
+   creates   => "/var/lib/tomcat6/webapps/probe.war",
    user      => "tomcat6",
    logoutput => true,
 }
@@ -48,8 +64,8 @@ file { "/etc/tomcat6/Catalina/localhost/probe.xml" :
 
 exec {"Download and install the Fedora4 war":
    command   => "wget -q https://github.com/fcrepo4/fcrepo4/releases/download/fcrepo-4.0.0-beta-01/fcrepo-webapp-4.0.0-beta-01.war -O fedora.war",
-   cwd       => "/srv/tomcat/fedora/webapps",
-   creates   => "/srv/tomcat/fedora/webapps/fedora.war",
+   cwd       => "/var/lib/tomcat6/webapps",
+   creates   => "/var/lib/tomcat6/webapps/fedora.war",
    user      => "tomcat6",
    logoutput => true,
 }
@@ -61,3 +77,5 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
    group   => tomcat6,
    content => template("fedora/fedora.xml.erb"),
 }
+
+# reboot tomcat6

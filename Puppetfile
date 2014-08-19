@@ -11,6 +11,4 @@ mod "puppetlabs/concat"
 # and let's just make vim a little nicer, because we can
 mod "saz/vim"
 
-# let's use camptocamp's tomcat module
-mod "camptocamp/tomcat"
 
