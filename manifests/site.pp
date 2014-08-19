@@ -22,24 +22,7 @@ include tomcat
 
 tomcat::instance {'fedora':
   ensure    => present,
-  http_port => '8080',
-}
-
-
-
-# set up a reverse proxy for tomcat
-class { 'apache':
-  default_vhost => false,
-}
-
-apache::vhost { 'fedora':
-  vhost_name => '*',
-  port       => '80',
-  docroot    => "/var/www/html",
-  proxy_pass => [
-    { 'path' => '/probe', 'url' => 'ajp://localhost:8009/probe' },
-    { 'path' => '/fedora', 'url' => 'ajp://localhost:8009/fedora' },
-  ],
+  http_port => '80',
 }
 
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
@@ -76,8 +59,8 @@ nexus::artifact {'fcrepo-webapp':
 
 # Set the runlevels of tomcat-fedora
 # AND start the tomcat-fedora service
-#service {"tomcat-fedora":
-#   enable => "true",
-#   ensure => "running",
-#}
+service {"tomcat-fedora":
+   enable => "true",
+   ensure => "running",
+}
 

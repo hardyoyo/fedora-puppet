@@ -18,10 +18,6 @@ mod "camptocamp/tomcat"
 #mod "camptocamp/apache_c2c",
 #   :git => "git://github.com/camptocamp/puppet-apache_c2c.git"
 #
-
-# let's just try the puppetlabs apache
-mod "puppetlabs/apache"
-
 # and we will deploy fedora with this cool puppet-nexus module
 mod "cescoffier/nexus",
    :git => "git://github.com/cescoffier/puppet-nexus.git"
