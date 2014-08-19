@@ -42,9 +42,6 @@ apache::vhost { 'fedora':
   ],
 }
 
-
-# TODO: set up tomcat-users.xml
-
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
 exec {"Download and install the Psi-probe war":
    command   => "wget http://psi-probe.googlecode.com/files/probe-2.3.3.zip && unzip probe-2.3.3.zip && rm probe-2.3.3.zip",
@@ -52,6 +49,14 @@ exec {"Download and install the Psi-probe war":
    creates   => "/srv/tomcat/fedora/webapps/probe.war",
    user      => "tomcat",
    logoutput => true,
+}
+
+# add a context fragment file for Psi-probe
+file { "/srv/tomcat/fedora/conf/Catalina/localhost/probe.xml" :
+   ensure  => file,
+   owner   => tomcat,
+   group   => tomcat,
+   content => template("fedora/probe.xml.erb"),
 }
  
 # finally, what we're here for, let's set up fedora4!
