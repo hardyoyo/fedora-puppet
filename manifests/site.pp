@@ -28,9 +28,11 @@ tomcat::instance {'fedora':
 
 
 # set up a reverse proxy for tomcat
-include apache
+class { 'apache':
+  default_vhost => false,
+}
 
-apache::vhost { 'fedora':
+apache::vhost { 'default':
   vhost_name => '*',
   port       => '80',
   docroot    => "/var/www/html",
