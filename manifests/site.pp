@@ -30,10 +30,15 @@ tomcat::instance {'fedora':
 # set up a reverse proxy for tomcat
 include apache
 
-  apache::vhost::proxy { '*':
-    path          => '/',
-    dest          => 'ajp://localhost:8009/',
-  }
+apache::vhost { 'default':
+  port       => '80',
+  docroot    => "/var/www/html",
+  proxy_pass => [
+    { 'path' => '/probe', 'url' => 'ajp://localhost:8009/probe' },
+    { 'path' => '/fedora', 'url' => 'ajp://localhost:8009/fedora' },
+  ],
+}
+
 
 # TODO: set up tomcat-users.xml
 
