@@ -75,7 +75,7 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
 file { "/etc/tomcat6/server.xml" :
    notify  => Service["tomcat6"],
    ensure  => file,
-   owner   => tomcat6,
-   group   => tomcat6,
+   owner   => root,
+   group   => root,
    content => template("fedora/server.xml.erb"),
 }
