@@ -24,12 +24,12 @@ package { "tomcat6":
 
 ->
 
-# set authbind for tomcat6 (just append AUTHBIND=yes to the end of /etc/default/tomcat6)
-exec {"setting AUTHBIND for tomcat6 to yes":
-   command   => "echo 'AUTHBIND=yes' >> /etc/default/tomcat6",
-   cwd       => "/etc/default",
-   creates   => "/etc/default/tomcat6",
-   logoutput => true,
+# set up tomcat6's /etc/default/tomcat6 file (includes AUTHBIND=yes)
+file { "/etc/default/tomcat6" :
+   ensure  => file,
+   owner   => root,
+   group   => root,
+   content => template("fedora/etc-default-tomcat6.erb"),
 }
 
 ->
@@ -78,4 +78,7 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
    content => template("fedora/fedora.xml.erb"),
 }
 
-# reboot tomcat6
+# restart tomcat6
+service { "tomcat6":
+  restart
+}
