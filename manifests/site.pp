@@ -21,6 +21,7 @@ class { 'vim': }
 service { "tomcat6":
   ensure => "running",
   enable => "true",
+  subscribe => File["/etc/tomcat6/server.xml"],
 }
 
 ->
@@ -71,9 +72,8 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
    content => template("fedora/fedora.xml.erb"),
 }
 
-# set up tomcat6's server.xml file and notify the service to restart
+# set up tomcat6's server.xml file (service will restart because it subscribes this file)
 file { "/etc/tomcat6/server.xml" :
-   notify  => Service["tomcat6"],
    ensure  => file,
    owner   => root,
    group   => root,
