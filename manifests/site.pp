@@ -79,3 +79,8 @@ file { "/etc/tomcat6/server.xml" :
    group   => root,
    content => template("fedora/server.xml.erb"),
 }
+
+# really really ensure tomcat6 is running
+service { "tomcat6":
+  ensure => "running",
+}
