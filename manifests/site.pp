@@ -17,11 +17,10 @@ Exec {
 # Let's ensure Vim is properly configured
 class { 'vim': }
 
-# ensure tomcat6 is installed
+# ensure tomcat6 is running
 service { "tomcat6":
   ensure => "running",
   enable => "true",
-  require => Package["tomcat6"],
 }
 
 ->
