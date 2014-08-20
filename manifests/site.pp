@@ -18,8 +18,10 @@ Exec {
 class { 'vim': }
 
 # ensure tomcat6 is installed
-package { "tomcat6":
-  ensure => "installed"
+service { "tomcat6":
+  ensure => "running",
+  enable => "true",
+  require => Package["tomcat6"],
 }
 
 ->
@@ -33,14 +35,6 @@ file { "/etc/default/tomcat6" :
 }
 
 ->
-
-# set up tomcat6's server.xml file
-file { "/etc/tomcat6/settings.xml" :
-   ensure  => file,
-   owner   => tomcat6,
-   group   => tomcat6,
-   content => template("fedora/probe.xml.erb"),
-}
  
 
 # For convenience in troubleshooting Tomcat, let's install Psi-probe
@@ -78,7 +72,11 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
    content => template("fedora/fedora.xml.erb"),
 }
 
-# restart tomcat6
-service { "tomcat6":
-  restart
+# set up tomcat6's server.xml file and notify the service to restart
+file { "/etc/tomcat6/settings.xml" :
+   notify  => Service["tomcat6"],
+   ensure  => file,
+   owner   => tomcat6,
+   group   => tomcat6,
+   content => template("fedora/settings.xml.erb"),
 }
