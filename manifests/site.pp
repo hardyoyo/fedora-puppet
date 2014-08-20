@@ -73,10 +73,10 @@ file { "/etc/tomcat6/Catalina/localhost/fedora.xml" :
 }
 
 # set up tomcat6's server.xml file and notify the service to restart
-file { "/etc/tomcat6/settings.xml" :
+file { "/etc/tomcat6/server.xml" :
    notify  => Service["tomcat6"],
    ensure  => file,
    owner   => tomcat6,
    group   => tomcat6,
-   content => template("fedora/settings.xml.erb"),
+   content => template("fedora/server.xml.erb"),
 }
